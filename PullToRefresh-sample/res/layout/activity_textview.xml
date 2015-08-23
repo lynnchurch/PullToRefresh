@@ -3,10 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <include layout="@layout/refresh_head" />
-    <!-- 支持所有实现Pullable接口的View -->
-
-    <com.jingchen.pulltorefresh.pullableview.PullableTextView
+    <com.jingchen.pulltorefresh.PullableTextView
         android:id="@+id/content_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,7 +13,5 @@
         android:textColor="@color/white"
         android:textSize="40sp"
         android:textStyle="bold" />
-
-    <include layout="@layout/load_more" />
 
 </com.jingchen.pulltorefresh.PullToRefreshLayout>

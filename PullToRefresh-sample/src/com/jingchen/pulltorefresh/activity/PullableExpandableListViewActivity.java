@@ -28,9 +28,9 @@ public class PullableExpandableListViewActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_expandablelistview);
-		((PullToRefreshLayout) findViewById(R.id.refresh_view))
-		.setOnPullListener(new MyPullListener());
-		expandableListView = (ExpandableListView) findViewById(R.id.content_view);
+		PullToRefreshLayout ptr=(PullToRefreshLayout) findViewById(R.id.refresh_view);
+		ptr.setOnPullListener(new MyPullListener());
+		expandableListView=(ExpandableListView)ptr.getPullableView();
 		initExpandableListView();
 	}
 

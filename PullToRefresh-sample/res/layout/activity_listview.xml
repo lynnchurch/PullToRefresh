@@ -1,7 +1,13 @@
-<com.jingchen.pulltorefresh.PullToRefreshListView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.jingchen.pulltorefresh.PullToRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/refresh_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFF" >
 
-</com.jingchen.pulltorefresh.PullToRefreshListView>
+    <com.jingchen.pulltorefresh.PullableListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="#AAA"
+        android:dividerHeight="5dp" />
+
+</com.jingchen.pulltorefresh.PullToRefreshLayout>

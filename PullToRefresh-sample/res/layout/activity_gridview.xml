@@ -3,10 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <include layout="@layout/refresh_head" />
-    <!-- 支持所有实现Pullable接口的View -->
-
-    <com.jingchen.pulltorefresh.pullableview.PullableGridView
+    <com.jingchen.pulltorefresh.PullableGridView
         android:id="@+id/content_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,7 +14,5 @@
         android:numColumns="auto_fit"
         android:stretchMode="columnWidth"
         android:verticalSpacing="15dp" />
-
-    <include layout="@layout/load_more" />
 
 </com.jingchen.pulltorefresh.PullToRefreshLayout>

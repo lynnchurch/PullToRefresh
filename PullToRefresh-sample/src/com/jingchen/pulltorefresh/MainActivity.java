@@ -6,7 +6,6 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -15,8 +14,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.jingchen.pulltorefresh.PullToRefreshLayout.OnPullProcessListener;
+import com.jingchen.pulltorefresh.activity.PullableExpandableListViewActivity;
 import com.jingchen.pulltorefresh.activity.PullableGifActivity;
+import com.jingchen.pulltorefresh.activity.PullableGridViewActivity;
+import com.jingchen.pulltorefresh.activity.PullableImageViewActivity;
 import com.jingchen.pulltorefresh.activity.PullableListViewActivity;
+import com.jingchen.pulltorefresh.activity.PullableScrollViewActivity;
+import com.jingchen.pulltorefresh.activity.PullableTextViewActivity;
+import com.jingchen.pulltorefresh.activity.PullableWebViewActivity;
 import com.jingchen.pulltorefresh.PullToRefreshLayout;
 
 /**
@@ -78,41 +83,40 @@ public class MainActivity extends Activity {
 				case 0:
 					intent.setClass(MainActivity.this,
 							PullableListViewActivity.class);
-					startActivity(intent);
 					break;
 				case 1:
 					intent.setClass(MainActivity.this,
 							PullableGifActivity.class);
-					startActivity(intent);
 					break;
 				case 2:
-					// intent.setClass(MainActivity.this,
-					// PullableGridViewActivity.class);
+					 intent.setClass(MainActivity.this,
+					 PullableGridViewActivity.class);
 					break;
 				case 3:
-					// intent.setClass(MainActivity.this,
-					// PullableExpandableListViewActivity.class);
+					 intent.setClass(MainActivity.this,
+					 PullableExpandableListViewActivity.class);
 					break;
 				case 4:
-					// intent.setClass(MainActivity.this,
-					// PullableScrollViewActivity.class);
+					 intent.setClass(MainActivity.this,
+					 PullableScrollViewActivity.class);
 					break;
 				case 5:
-					// intent.setClass(MainActivity.this,
-					// PullableWebViewActivity.class);
+					 intent.setClass(MainActivity.this,
+					 PullableWebViewActivity.class);
 					break;
 				case 6:
-					// intent.setClass(MainActivity.this,
-					// PullableImageViewActivity.class);
+					 intent.setClass(MainActivity.this,
+					 PullableImageViewActivity.class);
 					break;
 				case 7:
-					// intent.setClass(MainActivity.this,
-					// PullableTextViewActivity.class);
+					 intent.setClass(MainActivity.this,
+					 PullableTextViewActivity.class);
 					break;
 
 				default:
 					break;
 				}
+				startActivity(intent);
 			}
 		});
 	}
@@ -147,7 +151,6 @@ public class MainActivity extends Activity {
 		@Override
 		public void onPull(View v,float pullDistance,int which) {
 			// TODO Auto-generated method stub
-			Log.e("pullDistance", "" + pullDistance);
 		}
 
 	}

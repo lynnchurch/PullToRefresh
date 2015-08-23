@@ -17,40 +17,34 @@ import com.jingchen.pulltorefresh.MyPullListener;
 import com.jingchen.pulltorefresh.R;
 import com.jingchen.pulltorefresh.PullToRefreshLayout;
 
-public class PullableGridViewActivity extends Activity
-{
+public class PullableGridViewActivity extends Activity {
 	GridView gridView;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_gridview);
-		((PullToRefreshLayout) findViewById(R.id.refresh_view))
-		.setOnPullListener(new MyPullListener());
-		gridView = (GridView) findViewById(R.id.content_view);
+		PullToRefreshLayout ptr = (PullToRefreshLayout) findViewById(R.id.refresh_view);
+		ptr.setOnPullListener(new MyPullListener());
+		gridView = (GridView) ptr.getPullableView();
 		initGridView();
 	}
 
 	/**
 	 * GridView初始化方法
 	 */
-	private void initGridView()
-	{
+	private void initGridView() {
 		List<String> items = new ArrayList<String>();
-		for (int i = 0; i < 30; i++)
-		{
+		for (int i = 0; i < 30; i++) {
 			items.add("这里是item " + i);
 		}
 		MyAdapter adapter = new MyAdapter(this, items);
 		gridView.setAdapter(adapter);
-		gridView.setOnItemLongClickListener(new OnItemLongClickListener()
-		{
+		gridView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
-					int position, long id)
-			{
+					int position, long id) {
 				Toast.makeText(
 						PullableGridViewActivity.this,
 						"LongClick on "
@@ -59,13 +53,11 @@ public class PullableGridViewActivity extends Activity
 				return true;
 			}
 		});
-		gridView.setOnItemClickListener(new OnItemClickListener()
-		{
+		gridView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id)
-			{
+					int position, long id) {
 				Toast.makeText(PullableGridViewActivity.this,
 						" Click on " + parent.getAdapter().getItemId(position),
 						Toast.LENGTH_SHORT).show();
