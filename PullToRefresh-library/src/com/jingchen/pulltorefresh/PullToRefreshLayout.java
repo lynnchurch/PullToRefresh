@@ -916,7 +916,7 @@ public class PullToRefreshLayout extends RelativeLayout {
 		@Override
 		public void onPrepare(View v, int which) {
 			// TODO Auto-generated method stub
-
+			mGifDrawable.stop();
 		}
 
 		@Override
