@@ -733,10 +733,10 @@ public class PullToRefreshLayout extends RelativeLayout
             getPullableView();
             isLayout = true;
             initView();
-            refreshDist = ((ViewGroup) refreshView).getChildAt(0)
-                    .getMeasuredHeight();
-            loadmoreDist = ((ViewGroup) loadmoreView).getChildAt(0)
-                    .getMeasuredHeight();
+            refreshView.measure(0,0);
+            refreshDist = refreshView.getMeasuredHeight();
+            loadmoreView.measure(0,0);
+            loadmoreDist =  loadmoreView.getMeasuredHeight();
         }
         // 改变子控件的布局，这里直接用(pullDownY + pullUpY)作为偏移量，这样就可以不对当前状态作区分
         refreshView.layout(0,
