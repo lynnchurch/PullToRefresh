@@ -18,7 +18,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:19.1.0'
-    compile 'com.android.support:recyclerview-v7:21.+'
     compile files('libs/gif.jar')
+    compile 'com.android.support:recyclerview-v7:21.+'
+    compile 'com.android.support:cardview-v7:21.+'
 }

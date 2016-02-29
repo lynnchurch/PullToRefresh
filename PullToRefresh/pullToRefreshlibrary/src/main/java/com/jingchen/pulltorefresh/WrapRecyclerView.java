@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 public class WrapRecyclerView extends RecyclerView {
 
-    private ArrayList<View> mHeaderViews = new ArrayList<View>() ;
+    private ArrayList<View> mHeaderViews = new ArrayList<>() ;
 
-    private ArrayList<View> mFootViews = new ArrayList<View>() ;
+    private ArrayList<View> mFootViews = new ArrayList<>() ;
 
     private Adapter mAdapter ;
 

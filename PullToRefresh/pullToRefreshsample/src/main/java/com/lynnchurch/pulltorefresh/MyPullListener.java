@@ -17,7 +17,7 @@ public class MyPullListener implements OnPullListener {
 				// 千万别忘了告诉控件刷新完毕了哦！
 				pullToRefreshLayout.refreshFinish(PullToRefreshLayout.SUCCEED);
 			}
-		}.sendEmptyMessageDelayed(0, 5000);
+		}.sendEmptyMessageDelayed(0, 3000);
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class MyPullListener implements OnPullListener {
 				// 千万别忘了告诉控件加载完毕了哦！
 				pullToRefreshLayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
 			}
-		}.sendEmptyMessageDelayed(0, 5000);
+		}.sendEmptyMessageDelayed(0, 3000);
 	}
 
 }

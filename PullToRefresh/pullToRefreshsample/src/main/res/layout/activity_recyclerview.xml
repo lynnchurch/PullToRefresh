@@ -1,0 +1,14 @@
+<com.jingchen.pulltorefresh.PullToRefreshLayout
+    android:id="@+id/refresh_view"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF">
+
+    <com.jingchen.pulltorefresh.PullableRecyclerView
+        android:id="@+id/recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"/>
+
+</com.jingchen.pulltorefresh.PullToRefreshLayout>

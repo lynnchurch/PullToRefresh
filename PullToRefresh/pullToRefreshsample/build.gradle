@@ -20,4 +20,5 @@ android {
 
 dependencies {
     compile project(':pullToRefreshlibrary')
+    compile 'com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE'
 }

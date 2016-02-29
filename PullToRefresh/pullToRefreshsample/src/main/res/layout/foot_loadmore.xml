@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#AAA"
+                android:orientation="vertical">
+
+    <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
+        android:id="@+id/progressBar"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        app:mlpb_enable_circle_background="false"
+        app:mlpb_progress_color="#404040"
+        app:mlpb_show_arrow="false"/>
+
+</RelativeLayout>

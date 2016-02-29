@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
@@ -257,51 +256,58 @@ public class PullToRefreshLayout extends RelativeLayout
     /**
      * @param refreshResult PullToRefreshLayout.SUCCEED代表成功，PullToRefreshLayout.FAIL代表失败
      */
-    public void refreshFinish(int refreshResult)
+    public void refreshFinish(final int refreshResult)
     {
-        if (null != mOnRefreshProcessListener)
+        new Handler().postDelayed(new Runnable()
         {
-            mOnRefreshProcessListener.onFinish(refreshView,
-                    OnPullProcessListener.REFRESH);
-        }
-        if (null == customRefreshView)
-        {
-            refreshingView.clearAnimation();
-            refreshingView.setVisibility(View.GONE);
-        }
-        switch (refreshResult)
-        {
-            case SUCCEED:
-                // 刷新成功
+            @Override
+            public void run()
+            {
+                if (null != mOnRefreshProcessListener)
+                {
+                    mOnRefreshProcessListener.onFinish(refreshView,
+                            OnPullProcessListener.REFRESH);
+                }
                 if (null == customRefreshView)
                 {
-                    refreshStateImageView.setVisibility(View.VISIBLE);
-                    refreshStateTextView.setText(R.string.refresh_succeed);
-                    refreshStateImageView
-                            .setBackgroundResource(R.drawable.refresh_succeed);
+                    refreshingView.clearAnimation();
+                    refreshingView.setVisibility(View.GONE);
                 }
-                break;
-            case FAIL:
-            default:
-                // 刷新失败
-                if (null == customRefreshView)
+                switch (refreshResult)
                 {
-                    refreshStateImageView.setVisibility(View.VISIBLE);
-                    refreshStateTextView.setText(R.string.refresh_fail);
-                    refreshStateImageView
-                            .setBackgroundResource(R.drawable.refresh_failed);
+                    case SUCCEED:
+                        // 刷新成功
+                        if (null == customRefreshView)
+                        {
+                            refreshStateImageView.setVisibility(View.VISIBLE);
+                            refreshStateTextView.setText(R.string.refresh_succeed);
+                            refreshStateImageView
+                                    .setBackgroundResource(R.drawable.refresh_succeed);
+                        }
+                        break;
+                    case FAIL:
+                    default:
+                        // 刷新失败
+                        if (null == customRefreshView)
+                        {
+                            refreshStateImageView.setVisibility(View.VISIBLE);
+                            refreshStateTextView.setText(R.string.refresh_fail);
+                            refreshStateImageView
+                                    .setBackgroundResource(R.drawable.refresh_failed);
+                        }
+                        break;
                 }
-                break;
-        }
-        if (pullDownY > 0)
-        {
-            // 刷新结果停留1秒
-            new RemainHandler(this).sendEmptyMessageDelayed(0, 1000);
-        } else
-        {
-            changeState(DONE);
-            hide();
-        }
+                if (pullDownY > 0)
+                {
+                    // 刷新结果停留1秒
+                    new RemainHandler(PullToRefreshLayout.this).sendEmptyMessageDelayed(0, 1000);
+                } else
+                {
+                    changeState(DONE);
+                    hide();
+                }
+            }
+        },2400);
     }
 
     /**
@@ -446,6 +452,9 @@ public class PullToRefreshLayout extends RelativeLayout
                     pullUpView.setVisibility(View.INVISIBLE);
                     loadingView.startAnimation(refreshingAnimation);
                     loadStateTextView.setText(R.string.loading);
+                } else
+                {
+                    customLoadmoreView.setVisibility(View.VISIBLE);
                 }
                 break;
             case DONE:
@@ -662,6 +671,11 @@ public class PullToRefreshLayout extends RelativeLayout
             // 刷新操作
             if (mListener != null)
                 mListener.onRefresh(PullToRefreshLayout.this);
+            if(null!=mOnRefreshProcessListener)
+            {
+                mOnRefreshProcessListener.onStart(refreshView,
+                        OnPullProcessListener.REFRESH);
+            }
             hide();
         }
 
@@ -682,7 +696,7 @@ public class PullToRefreshLayout extends RelativeLayout
     {
         loadmoreView.setVisibility(View.GONE);
         AutoRefreshAndLoadTask task = new AutoRefreshAndLoadTask();
-        task.execute(20);
+        task.execute(2);
     }
 
     /**
@@ -733,10 +747,10 @@ public class PullToRefreshLayout extends RelativeLayout
             getPullableView();
             isLayout = true;
             initView();
-            refreshView.measure(0,0);
+            refreshView.measure(0, 0);
             refreshDist = refreshView.getMeasuredHeight();
-            loadmoreView.measure(0,0);
-            loadmoreDist =  loadmoreView.getMeasuredHeight();
+            loadmoreView.measure(0, 0);
+            loadmoreDist = loadmoreView.getMeasuredHeight();
         }
         // 改变子控件的布局，这里直接用(pullDownY + pullUpY)作为偏移量，这样就可以不对当前状态作区分
         refreshView.layout(0,
@@ -811,7 +825,7 @@ public class PullToRefreshLayout extends RelativeLayout
 
         public RemainHandler(PullToRefreshLayout layout)
         {
-            mLayout = new WeakReference<PullToRefreshLayout>(layout);
+            mLayout = new WeakReference<>(layout);
         }
 
         @Override
@@ -835,7 +849,7 @@ public class PullToRefreshLayout extends RelativeLayout
 
         public UpdateHandler(PullToRefreshLayout layout)
         {
-            mLayout = new WeakReference<PullToRefreshLayout>(layout);
+            mLayout = new WeakReference<>(layout);
         }
 
         @Override
@@ -940,17 +954,17 @@ public class PullToRefreshLayout extends RelativeLayout
      *
      * @author chenjing
      */
-    public static interface OnPullListener
+    public interface OnPullListener
     {
         /**
          * 刷新操作
          */
-        public void onRefresh(PullToRefreshLayout pullToRefreshLayout);
+        void onRefresh(PullToRefreshLayout pullToRefreshLayout);
 
         /**
          * 加载操作
          */
-        public void onLoadMore(PullToRefreshLayout pullToRefreshLayout);
+        void onLoadMore(PullToRefreshLayout pullToRefreshLayout);
     }
 
     /**
@@ -958,11 +972,11 @@ public class PullToRefreshLayout extends RelativeLayout
      *
      * @author LynnChurch
      */
-    public static interface OnPullProcessListener
+    public interface OnPullProcessListener
     {
-        public static final int REFRESH = 1; // 刷新
+        int REFRESH = 1; // 刷新
 
-        public static final int LOADMORE = 2; // 加载更多
+        int LOADMORE = 2; // 加载更多
 
         /**
          * 准备 （提示下拉刷新或上拉加载更多）
@@ -970,7 +984,7 @@ public class PullToRefreshLayout extends RelativeLayout
          * @param v
          * @param which 刷新或加载更多
          */
-        public void onPrepare(View v, int which);
+        void onPrepare(View v, int which);
 
         /**
          * 开始 （提示释放刷新或释放加载更多）
@@ -978,7 +992,7 @@ public class PullToRefreshLayout extends RelativeLayout
          * @param v
          * @param which 刷新或加载更多
          */
-        public void onStart(View v, int which);
+        void onStart(View v, int which);
 
         /**
          * 处理中
@@ -986,7 +1000,7 @@ public class PullToRefreshLayout extends RelativeLayout
          * @param v
          * @param which 刷新或加载更多
          */
-        public void onHandling(View v, int which);
+        void onHandling(View v, int which);
 
         /**
          * 完成
@@ -994,7 +1008,7 @@ public class PullToRefreshLayout extends RelativeLayout
          * @param v
          * @param which 刷新或加载更多
          */
-        public void onFinish(View v, int which);
+        void onFinish(View v, int which);
 
         /**
          * 用于获取拉取的距离
@@ -1003,7 +1017,7 @@ public class PullToRefreshLayout extends RelativeLayout
          * @param pullDistance
          * @param which        刷新或加载更多
          */
-        public void onPull(View v, float pullDistance, int which);
+        void onPull(View v, float pullDistance, int which);
     }
 
     /**
