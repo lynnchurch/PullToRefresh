@@ -53,7 +53,7 @@ public class MainActivity extends Activity
     {
         List<String> items = new ArrayList<>();
         items.add("可下拉刷新上拉加载的ListView");
-        items.add("自动加载更多的可下拉刷新上拉加载的RecyclerView");
+        items.add("滑动到底部自动加载更多的RecyclerView");
         items.add("带Gif动画的可下拉刷新上拉加载的ListView");
         items.add("可下拉刷新上拉加载的GridView");
         items.add("可下拉刷新上拉加载的ExpandableListView");

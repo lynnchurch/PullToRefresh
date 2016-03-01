@@ -21,13 +21,13 @@ import java.util.ArrayList;
 
 public class PullableRecyclerViewActivity extends Activity
 {
+    private static final String TAG = PullableRecyclerViewActivity.class.getSimpleName();
     private WrapRecyclerView recycler_view;
     private View mFootView;
     CircleProgressBar mCircleProgressBar;
     private PullToRefreshLayout ptrl;
     private ArrayList<String> mData = new ArrayList<>();
     private RecyclerAdapter mAdapter;
-    private boolean isFirstIn = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,12 +38,13 @@ public class PullableRecyclerViewActivity extends Activity
         mFootView = LayoutInflater.from(this).inflate(R.layout.foot_loadmore, null);
         mCircleProgressBar = (CircleProgressBar) mFootView.findViewById(R.id.progressBar);
         ptrl.setPullUpEnable(false);
+        // 滑动到某个位置自动加载
         ((PullableRecyclerView) ptrl.getPullableView()).setOnScrollUpListener(new PullableRecyclerView.OnScrollUpListener()
         {
             @Override
             public void onScrollUp(int position)
             {
-                if (position == mData.size()-1)
+                if (position == mData.size() - 1)
                 {
                     mCircleProgressBar.setVisibility(View.VISIBLE);
                     new Handler()
@@ -51,12 +52,12 @@ public class PullableRecyclerViewActivity extends Activity
                         @Override
                         public void handleMessage(Message msg)
                         {
-                            // 千万别忘了告诉控件加载完毕了哦！
                             int size = mData.size();
                             for (int i = size; i < size + 10; i++)
                             {
                                 mData.add("这里是item " + i);
                             }
+                            mAdapter.notifyDataSetChanged();
                             mCircleProgressBar.setVisibility(View.GONE);
                         }
                     }.sendEmptyMessageDelayed(0, 3000);
@@ -69,18 +70,6 @@ public class PullableRecyclerViewActivity extends Activity
         recycler_view = (WrapRecyclerView) ptrl.getPullableView();
         recycler_view.addFootView(mFootView);
         initRecyclerView();
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus)
-    {
-        super.onWindowFocusChanged(hasFocus);
-        // 第一次进入自动刷新
-        if (isFirstIn)
-        {
-            ptrl.autoRefresh();
-            isFirstIn = false;
-        }
     }
 
     /**
@@ -116,7 +105,6 @@ public class PullableRecyclerViewActivity extends Activity
             }
         });
         recycler_view.setAdapter(mAdapter);
-        ptrl.autoRefresh();
     }
 
 

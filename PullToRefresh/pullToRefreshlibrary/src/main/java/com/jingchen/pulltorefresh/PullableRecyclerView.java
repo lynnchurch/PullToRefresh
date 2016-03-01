@@ -37,6 +37,10 @@ public class PullableRecyclerView extends WrapRecyclerView implements Pullable
             {
                 if (null != mOnScrollUpListener)
                 {
+                    if(getAdapter().getItemCount()-1==getLastVisibleItemPosition())
+                    {
+                        return;
+                    }
 //                    Log.i(TAG, "LastVisibleItemPosition:" + getLastVisibleItemPosition());
 //                    Log.i(TAG, "position:" + mTempLastVisiblePosition);
 //                    Log.i(TAG, "childCount:" + getChildCount());
@@ -135,7 +139,6 @@ public class PullableRecyclerView extends WrapRecyclerView implements Pullable
         } else if (lm instanceof StaggeredGridLayoutManager)
         {
             int positions[] = new int[1];
-            ((StaggeredGridLayoutManager) lm).findFirstVisibleItemPositions(positions);
             ((StaggeredGridLayoutManager) lm).findLastVisibleItemPositions(positions);
             lastVisibleItemPosition = positions[0];
         }

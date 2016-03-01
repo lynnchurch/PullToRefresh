@@ -5,18 +5,17 @@
               android:background="@color/white"
               android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:background="#AAA"/>
-
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:textSize="16dp"
+        android:gravity="center"
         android:textColor="#000"
-        android:gravity="center"/>
+        android:textSize="16dp"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="#AAA"/>
 
 </LinearLayout>
