@@ -52,15 +52,15 @@ public class MainActivity extends Activity
     private void initListView()
     {
         List<String> items = new ArrayList<>();
-        items.add("可下拉刷新上拉加载的ListView");
-        items.add("滑动到底部自动加载更多的RecyclerView");
-        items.add("带Gif动画的可下拉刷新上拉加载的ListView");
-        items.add("可下拉刷新上拉加载的GridView");
-        items.add("可下拉刷新上拉加载的ExpandableListView");
-        items.add("可下拉刷新上拉加载的SrcollView");
-        items.add("可下拉刷新上拉加载的WebView");
-        items.add("可下拉刷新上拉加载的ImageView");
-        items.add("可下拉刷新上拉加载的TextView");
+        items.add(getString(R.string.listview));
+        items.add(getString(R.string.recyclerview));
+        items.add(getString(R.string.gif_listview));
+        items.add(getString(R.string.grid_view));
+        items.add(getString(R.string.expandable_listview));
+        items.add(getString(R.string.scrollview));
+        items.add(getString(R.string.webview));
+        items.add(getString(R.string.imageview));
+        items.add(getString(R.string.textview));
         MyAdapter adapter = new MyAdapter(this, items);
         listView.setAdapter(adapter);
         listView.setOnItemLongClickListener(new OnItemLongClickListener()

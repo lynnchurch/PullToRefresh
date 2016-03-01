@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.lynnchurch.pulltorefresh"
-          xmlns:android="http://schemas.android.com/apk/res/android"
-          android:versionCode="1"
-          android:versionName="1.0">
+<manifest
+    package="com.lynnchurch.pulltorefresh"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="1"
+    android:versionName="1.0">
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -23,22 +24,33 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.PullableExpandableListViewActivity">
-        </activity>
-        <activity android:name=".activity.PullableGridViewActivity">
-        </activity>
-        <activity android:name=".activity.PullableListViewActivity">
-        </activity>
-        <activity android:name=".activity.PullableScrollViewActivity">
-        </activity>
-        <activity android:name=".activity.PullableWebViewActivity">
-        </activity>
-        <activity android:name=".activity.PullableImageViewActivity">
-        </activity>
-        <activity android:name=".activity.PullableTextViewActivity">
-        </activity>
-        <activity android:name=".activity.PullableGifActivity"/>
-        <activity android:name=".activity.PullableRecyclerViewActivity"/>
+        <activity
+            android:name=".activity.PullableExpandableListViewActivity"
+            android:label="@string/expandable_listview"/>
+        <activity
+            android:name=".activity.PullableGridViewActivity"
+            android:label="@string/grid_view"/>
+        <activity
+            android:name=".activity.PullableListViewActivity"
+            android:label="@string/listview"/>
+        <activity
+            android:name=".activity.PullableScrollViewActivity"
+            android:label="@string/scrollview"/>
+        <activity
+            android:name=".activity.PullableWebViewActivity"
+            android:label="@string/webview"/>
+        <activity
+            android:name=".activity.PullableImageViewActivity"
+            android:label="@string/imageview"/>
+        <activity
+            android:name=".activity.PullableTextViewActivity"
+            android:label="@string/textview"/>
+        <activity
+            android:name=".activity.PullableGifActivity"
+            android:label="@string/gif_listview"/>
+        <activity
+            android:name=".activity.PullableRecyclerViewActivity"
+            android:label="@string/recyclerview"/>
     </application>
 
 </manifest>
