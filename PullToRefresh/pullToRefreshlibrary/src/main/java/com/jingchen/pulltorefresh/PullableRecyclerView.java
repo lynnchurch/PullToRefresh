@@ -37,15 +37,15 @@ public class PullableRecyclerView extends WrapRecyclerView implements Pullable
             {
                 if (null != mOnScrollUpListener)
                 {
-                    if(getAdapter().getItemCount()-1==getLastVisibleItemPosition())
-                    {
-                        return;
-                    }
 //                    Log.i(TAG, "LastVisibleItemPosition:" + getLastVisibleItemPosition());
 //                    Log.i(TAG, "position:" + mTempLastVisiblePosition);
 //                    Log.i(TAG, "childCount:" + getChildCount());
+                    if (getAdapter().getItemCount() - 1 == getLastVisibleItemPosition())
+                    {
+                        return;
+                    }
                     if (mTempLastVisiblePosition < getLastVisibleItemPosition()
-                            ||mTempLastVisiblePosition-getLastVisibleItemPosition()>=getChildCount())
+                            || mTempLastVisiblePosition - getLastVisibleItemPosition() >= getChildCount())
                     {
                         mTempLastVisiblePosition = getLastVisibleItemPosition();
                         mOnScrollUpListener.onScrollUp(mTempLastVisiblePosition);
@@ -106,12 +106,12 @@ public class PullableRecyclerView extends WrapRecyclerView implements Pullable
     {
         LayoutManager lm = getLayoutManager();
         int firstVisibleItemPosition = 0;
-        if (lm instanceof LinearLayoutManager)
-        {
-            firstVisibleItemPosition = ((LinearLayoutManager) lm).findFirstVisibleItemPosition();
-        } else if (lm instanceof GridLayoutManager)
+        if (lm instanceof GridLayoutManager)
         {
             firstVisibleItemPosition = ((GridLayoutManager) lm).findFirstVisibleItemPosition();
+        } else if (lm instanceof LinearLayoutManager)
+        {
+            firstVisibleItemPosition = ((LinearLayoutManager) lm).findFirstVisibleItemPosition();
         } else if (lm instanceof StaggeredGridLayoutManager)
         {
             int positions[] = new int[1];
@@ -130,12 +130,12 @@ public class PullableRecyclerView extends WrapRecyclerView implements Pullable
     {
         LayoutManager lm = getLayoutManager();
         int lastVisibleItemPosition = 0;
-        if (lm instanceof LinearLayoutManager)
-        {
-            lastVisibleItemPosition = ((LinearLayoutManager) lm).findLastVisibleItemPosition();
-        } else if (lm instanceof GridLayoutManager)
+        if (lm instanceof GridLayoutManager)
         {
             lastVisibleItemPosition = ((GridLayoutManager) lm).findLastVisibleItemPosition();
+        } else if (lm instanceof LinearLayoutManager)
+        {
+            lastVisibleItemPosition = ((LinearLayoutManager) lm).findLastVisibleItemPosition();
         } else if (lm instanceof StaggeredGridLayoutManager)
         {
             int positions[] = new int[1];
