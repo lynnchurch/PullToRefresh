@@ -128,6 +128,11 @@ public class PullToRefreshLayout extends RelativeLayout
     // 上拉头
     private View loadmoreView;
 
+    // 是否已经准备下拉
+    private boolean mPreparedPullDown;
+    // 是否已经准备上拉
+    private boolean mPreparedPullUp;
+
     public PullToRefreshLayout(Context context)
     {
         this(context, null, 0);
@@ -307,7 +312,7 @@ public class PullToRefreshLayout extends RelativeLayout
                     hide();
                 }
             }
-        },2400);
+        }, 2400);
     }
 
     /**
@@ -369,16 +374,8 @@ public class PullToRefreshLayout extends RelativeLayout
         switch (state)
         {
             case INIT:
-                if (null != mOnRefreshProcessListener)
-                {
-                    mOnRefreshProcessListener.onPrepare(refreshView,
-                            OnPullProcessListener.REFRESH);
-                }
-                if (null != mOnLoadmoreProcessListener)
-                {
-                    mOnLoadmoreProcessListener.onPrepare(loadmoreView,
-                            OnPullProcessListener.LOADMORE);
-                }
+                mPreparedPullDown = false;
+                mPreparedPullUp = false;
                 // 下拉布局初始状态
                 if (null == customRefreshView)
                 {
@@ -514,13 +511,31 @@ public class PullToRefreshLayout extends RelativeLayout
                 mEvents = -1;
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (null != mOnRefreshProcessListener)
+                if (null != mOnRefreshProcessListener && pullDownY > 0)
                 {
+                    if (!mPreparedPullDown)
+                    {
+                        mPreparedPullDown = true;
+                        if (null != mOnRefreshProcessListener)
+                        {
+                            mOnRefreshProcessListener.onPrepare(refreshView,
+                                    OnPullProcessListener.REFRESH);
+                        }
+                    }
                     mOnRefreshProcessListener.onPull(refreshView, pullDownY,
                             OnPullProcessListener.REFRESH);
                 }
-                if (null != mOnLoadmoreProcessListener)
+                if (null != mOnLoadmoreProcessListener && pullUpY < 0)
                 {
+                    if (!mPreparedPullUp)
+                    {
+                        mPreparedPullUp = true;
+                        if (null != mOnLoadmoreProcessListener)
+                        {
+                            mOnLoadmoreProcessListener.onPrepare(loadmoreView,
+                                    OnPullProcessListener.LOADMORE);
+                        }
+                    }
                     mOnLoadmoreProcessListener.onPull(loadmoreView, pullUpY,
                             OnPullProcessListener.LOADMORE);
                 }
@@ -671,7 +686,7 @@ public class PullToRefreshLayout extends RelativeLayout
             // 刷新操作
             if (mListener != null)
                 mListener.onRefresh(PullToRefreshLayout.this);
-            if(null!=mOnRefreshProcessListener)
+            if (null != mOnRefreshProcessListener)
             {
                 mOnRefreshProcessListener.onStart(refreshView,
                         OnPullProcessListener.REFRESH);
