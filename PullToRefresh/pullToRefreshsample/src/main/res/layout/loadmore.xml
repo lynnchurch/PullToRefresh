@@ -5,6 +5,14 @@
                 android:background="#AAA"
                 android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/tv_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
     <com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar
         android:id="@+id/progressBar"
         xmlns:app="http://schemas.android.com/apk/res-auto"
