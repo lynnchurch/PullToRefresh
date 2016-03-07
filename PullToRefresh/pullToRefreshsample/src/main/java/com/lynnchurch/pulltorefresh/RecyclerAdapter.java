@@ -78,8 +78,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     @Override
                     public boolean onLongClick(View v)
                     {
-                        mOnItemClickListener.onItemClick(viewHolder.itemView, position);
-                        return false;
+                        mOnItemClickListener.onItemLongClick(viewHolder.itemView, position);
+                        return true;
                     }
                 });
             }
@@ -183,7 +183,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     {
         void onItemClick(View view, int position);
 
-        void onItemLoginClick(View view, int position);
+        void onItemLongClick(View view, int position);
     }
 
     /**

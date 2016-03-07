@@ -96,7 +96,7 @@ public class PullableRecyclerViewActivity extends Activity
             }
 
             @Override
-            public void onItemLoginClick(View view, int position)
+            public void onItemLongClick(View view, int position)
             {
                 Toast.makeText(
                         PullableRecyclerViewActivity.this,
