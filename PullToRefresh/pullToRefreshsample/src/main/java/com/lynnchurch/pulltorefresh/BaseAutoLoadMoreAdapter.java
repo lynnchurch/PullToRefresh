@@ -11,12 +11,15 @@ import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.ArrayList;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+/**
+ * 自动加载更多适配器
+ */
+public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
     private static final int NORMAL_ITEM = 0;
     private static final int BOTTOM_ITEM = 1;
-    private Context mActivity;
-    private ArrayList<String> mData;
+    protected Context mContext;
+    protected ArrayList<T> mData;
     private OnItemClickListener mOnItemClickListener;
     private LoadmoreViewHolder mLoadmore;
     private OnLoadmoreListener mOnLoadmoreListener;
@@ -24,15 +27,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private int mBottomItemPosition; // 底部加载最多项的位置
 
 
-    public RecyclerAdapter(Context context, ArrayList<String> data)
+    public BaseAutoLoadMoreAdapter(Context context, ArrayList<T> data)
     {
-        mActivity = context;
+        mContext = context;
         mData = data;
-        mData.add("");
+        mData.add((T) new Object());
         mLastPosition = mData.size() - 2;
         mBottomItemPosition = mData.size() - 1;
     }
-
 
     @Override
     public int getItemViewType(int position)
@@ -47,17 +49,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        if (NORMAL_ITEM == viewType)
+        if (BOTTOM_ITEM == viewType)
         {
-            return new NormalViewHolder(LayoutInflater.from(
-                    mActivity).inflate(R.layout.recyclerview_list_item, parent,
-                    false));
+            mLoadmore = new LoadmoreViewHolder(LayoutInflater.from(mContext).inflate(R.layout.loadmore, parent, false));
+            return mLoadmore;
         } else
         {
-            mLoadmore = new LoadmoreViewHolder(LayoutInflater.from(mActivity).inflate(R.layout.loadmore, parent, false));
-            return mLoadmore;
+            return onCreateNormalViewHolder(parent, viewType);
         }
     }
+
+    public abstract NormalViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType);
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position)
@@ -86,7 +88,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     }
                 });
             }
-            viewHolder.tv_name.setText(mData.get(position));
+            onBindNormalViewHolder(viewHolder, position);
         }
 
         if (position > mLastPosition && null != mOnLoadmoreListener)
@@ -96,6 +98,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
+    public abstract void onBindNormalViewHolder(BaseAutoLoadMoreAdapter.NormalViewHolder holder, final int position);
+
     @Override
     public int getItemCount()
     {
@@ -103,16 +107,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
 
-    class NormalViewHolder extends RecyclerView.ViewHolder
+    public static class NormalViewHolder extends RecyclerView.ViewHolder
     {
         View itemView;
-        TextView tv_name;
 
         public NormalViewHolder(View v)
         {
             super(v);
             itemView = v;
-            tv_name = (TextView) v.findViewById(R.id.tv_name);
         }
     }
 

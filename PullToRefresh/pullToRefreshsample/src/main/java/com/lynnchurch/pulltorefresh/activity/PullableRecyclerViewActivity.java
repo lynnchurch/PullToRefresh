@@ -13,7 +13,7 @@ import com.jingchen.pulltorefresh.PullToRefreshLayout;
 import com.jingchen.pulltorefresh.WrapRecyclerView;
 import com.lynnchurch.pulltorefresh.MyPullListener;
 import com.lynnchurch.pulltorefresh.R;
-import com.lynnchurch.pulltorefresh.RecyclerAdapter;
+import com.lynnchurch.pulltorefresh.MyRecyclerAdapter;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ public class PullableRecyclerViewActivity extends Activity
     private WrapRecyclerView recycler_view;
     private PullToRefreshLayout ptrl;
     private ArrayList<String> mData = new ArrayList<>();
-    private RecyclerAdapter mAdapter;
+    private MyRecyclerAdapter mAdapter;
     private int mRequestCount; // 请求次数
 
     @Override
@@ -49,8 +49,8 @@ public class PullableRecyclerViewActivity extends Activity
         }
         // 设置列表
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new RecyclerAdapter(this, mData);
-        mAdapter.setOnLoadmoreListener(new RecyclerAdapter.OnLoadmoreListener()
+        mAdapter = new MyRecyclerAdapter(this, mData);
+        mAdapter.setOnLoadmoreListener(new MyRecyclerAdapter.OnLoadmoreListener()
         {
             @Override
             public void onLoadmore()
@@ -84,7 +84,7 @@ public class PullableRecyclerViewActivity extends Activity
                 }.sendEmptyMessageDelayed(0, 3000);
             }
         });
-        mAdapter.setmOnItemClickListener(new RecyclerAdapter.OnItemClickListener()
+        mAdapter.setmOnItemClickListener(new MyRecyclerAdapter.OnItemClickListener()
         {
             @Override
             public void onItemClick(View view, int position)
