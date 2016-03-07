@@ -102,7 +102,7 @@ public class PullableRecyclerView extends WrapRecyclerView implements Pullable
      *
      * @return
      */
-    private int getFirstVisibleItemPosition()
+    public int getFirstVisibleItemPosition()
     {
         LayoutManager lm = getLayoutManager();
         int firstVisibleItemPosition = 0;
@@ -126,7 +126,7 @@ public class PullableRecyclerView extends WrapRecyclerView implements Pullable
      *
      * @return
      */
-    private int getLastVisibleItemPosition()
+    public int getLastVisibleItemPosition()
     {
         LayoutManager lm = getLayoutManager();
         int lastVisibleItemPosition = 0;
