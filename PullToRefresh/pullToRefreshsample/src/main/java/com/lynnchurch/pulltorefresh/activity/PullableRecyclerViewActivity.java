@@ -76,8 +76,7 @@ public class PullableRecyclerViewActivity extends Activity
                         int size = mData.size();
                         for (int i = size; i < size + 5; i++)
                         {
-                            // 由于加载更多的视图是用最后的item实现的,所以要插入在最后一项的前面
-                            mData.add(mData.size() - 1, "这里是item " + (i - 1));
+                            mData.add("这里是item " + (i - 1));
                         }
                         Log.i(TAG, "加载更多成功");
                         mAdapter.notifyDataSetChanged();

@@ -20,7 +20,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private OnItemClickListener mOnItemClickListener;
     private LoadmoreViewHolder mLoadmore;
     private OnLoadmoreListener mOnLoadmoreListener;
-    private int mLastPosition;
+    private int mLastPosition; // 正常项最后一项的位置
+    private int mBottomItemPosition; // 底部加载最多项的位置
 
 
     public RecyclerAdapter(Context context, ArrayList<String> data)
@@ -29,6 +30,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mData = data;
         mData.add("");
         mLastPosition = mData.size() - 2;
+        mBottomItemPosition = mData.size() - 1;
     }
 
 
@@ -60,6 +62,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position)
     {
+        correctBottomItemPosition();
         if (holder instanceof NormalViewHolder)
         {
             final NormalViewHolder viewHolder = (NormalViewHolder) holder;
@@ -128,6 +131,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             itemView = v;
             tv_hint = (TextView) v.findViewById(R.id.tv_hint);
             progressBar = (CircleProgressBar) v.findViewById(R.id.progressBar);
+        }
+    }
+
+    /**
+     * 矫正底部加载更多项的位置
+     */
+    public void correctBottomItemPosition()
+    {
+        if (mBottomItemPosition != mData.size() - 1)
+        {
+            mData.add(mData.remove(mBottomItemPosition));
+            mBottomItemPosition = mData.size() - 1;
         }
     }
 
