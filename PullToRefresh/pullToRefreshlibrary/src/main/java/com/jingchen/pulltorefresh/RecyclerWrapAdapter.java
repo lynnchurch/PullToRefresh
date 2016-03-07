@@ -16,26 +16,25 @@ public class RecyclerWrapAdapter extends RecyclerView.Adapter implements Wrapper
     private ArrayList<View> mFootViews;
 
     static final ArrayList<View> EMPTY_INFO_LIST =
-            new ArrayList<View>();
+            new ArrayList<>();
 
-    private int mCurrentPosition;
 
-    public RecyclerWrapAdapter(ArrayList<View> mHeaderViews, ArrayList<View> mFootViews, RecyclerView.Adapter mAdapter)
+    public RecyclerWrapAdapter(ArrayList<View> headerViews, ArrayList<View> footViews, RecyclerView.Adapter adapter)
     {
-        this.mAdapter = mAdapter;
-        if (mHeaderViews == null)
+        mAdapter = adapter;
+        if (null == mHeaderViews)
         {
-            this.mHeaderViews = EMPTY_INFO_LIST;
+            mHeaderViews = EMPTY_INFO_LIST;
         } else
         {
-            this.mHeaderViews = mHeaderViews;
+            mHeaderViews = headerViews;
         }
-        if (mHeaderViews == null)
+        if (null == mFootViews)
         {
-            this.mFootViews = EMPTY_INFO_LIST;
+            mFootViews = EMPTY_INFO_LIST;
         } else
         {
-            this.mFootViews = mFootViews;
+            mFootViews = footViews;
         }
     }
 
@@ -100,7 +99,6 @@ public class RecyclerWrapAdapter extends RecyclerView.Adapter implements Wrapper
     @Override
     public int getItemViewType(int position)
     {
-        mCurrentPosition = position;
         int numHeaders = getHeadersCount();
         if (position < numHeaders)
         {
