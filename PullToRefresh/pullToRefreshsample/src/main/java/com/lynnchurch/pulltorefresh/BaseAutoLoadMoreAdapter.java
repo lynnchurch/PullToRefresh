@@ -85,12 +85,10 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
                 });
             }
             onBindNormalViewHolder(viewHolder, position);
-        } else
+        }
+        if (!isOverParent())
         {
-            if (!isOverParent())
-            {
-                showLoading(false);
-            }
+            showLoading(false);
         }
 
         if (position + 1 > mLastPosition && null != mOnLoadmoreListener && isOverParent())
