@@ -84,7 +84,7 @@ public class PullableRecyclerViewActivity extends Activity
                 }.sendEmptyMessageDelayed(0, 3000);
             }
         });
-        mAdapter.setmOnItemClickListener(new MyRecyclerAdapter.OnItemClickListener()
+        mAdapter.setOnItemClickListener(new MyRecyclerAdapter.OnItemClickListener()
         {
             @Override
             public void onItemClick(View view, int position)

@@ -16,6 +16,7 @@ import java.util.ArrayList;
  */
 public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
+    private static final String TAG = BaseAutoLoadMoreAdapter.class.getSimpleName();
     private static final int NORMAL_ITEM = 0;
     private static final int BOTTOM_ITEM = 1;
     protected Context mContext;
@@ -25,6 +26,9 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
     private OnLoadmoreListener mOnLoadmoreListener;
     private int mLastPosition; // 正常项最后一项的位置
     private int mBottomItemPosition; // 底部加载最多项的位置
+    private int mFirstPosition;
+    private int mParentHeight; // item父视图的高度
+    private int mItemsHeight; // 所有item的总高度
 
 
     public BaseAutoLoadMoreAdapter(Context context, ArrayList<T> data)
@@ -33,6 +37,7 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
         mData = data;
         mData.add((T) new Object());
         mLastPosition = mData.size() - 2;
+        mFirstPosition = mLastPosition;
         mBottomItemPosition = mData.size() - 1;
     }
 
@@ -49,6 +54,7 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
+        mParentHeight = parent.getHeight();
         if (BOTTOM_ITEM == viewType)
         {
             mLoadmore = new LoadmoreViewHolder(LayoutInflater.from(mContext).inflate(R.layout.loadmore, parent, false));
@@ -64,6 +70,8 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position)
     {
+        holder.itemView.measure(0, 0);
+        mItemsHeight += holder.itemView.getMeasuredHeight();
         correctBottomItemPosition();
         if (holder instanceof NormalViewHolder)
         {
@@ -90,15 +98,33 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
             }
             onBindNormalViewHolder(viewHolder, position);
         }
-
-        if (position > mLastPosition && null != mOnLoadmoreListener)
+        else
         {
+            if(!isOverParent())
+            {
+                showLoading(false);
+            }
+        }
+
+        if (position > mLastPosition && null != mOnLoadmoreListener && isOverParent())
+        {
+            showLoading(true);
             mOnLoadmoreListener.onLoadmore();
             mLastPosition = mData.size() - 1;
         }
     }
 
     public abstract void onBindNormalViewHolder(BaseAutoLoadMoreAdapter.NormalViewHolder holder, final int position);
+
+    /**
+     * item是否撑满父视图
+     *
+     * @return
+     */
+    public boolean isOverParent()
+    {
+        return mParentHeight < mItemsHeight ? true : false;
+    }
 
     @Override
     public int getItemCount()
@@ -171,6 +197,7 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
         });
     }
 
+
     /**
      * 当没有更多
      */
@@ -182,13 +209,29 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
         mLoadmore.tv_hint.setOnClickListener(null);
     }
 
+    /**
+     * 显示加载视图
+     *
+     * @param show
+     */
+    public void showLoading(boolean show)
+    {
+        if (show)
+        {
+            mLoadmore.progressBar.setVisibility(View.VISIBLE);
+        } else
+        {
+            mLoadmore.progressBar.setVisibility(View.GONE);
+        }
+    }
+
 
     /**
      * 设置Item监听器
      *
      * @param onItemClickListener
      */
-    public void setmOnItemClickListener(OnItemClickListener onItemClickListener)
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener)
     {
         mOnItemClickListener = onItemClickListener;
     }
