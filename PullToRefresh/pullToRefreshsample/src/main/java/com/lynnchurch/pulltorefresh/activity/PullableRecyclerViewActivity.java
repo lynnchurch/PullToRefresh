@@ -53,7 +53,7 @@ public class PullableRecyclerViewActivity extends Activity
         }
         // 设置列表
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new MyRecyclerAdapter(this, mData);
+        mAdapter = new MyRecyclerAdapter(this,recycler_view, mData);
         mAdapter.setOnLoadmoreListener(new MyRecyclerAdapter.OnLoadmoreListener()
         {
             @Override
@@ -80,7 +80,7 @@ public class PullableRecyclerViewActivity extends Activity
                         int size = mData.size();
                         for (int i = size; i < size + 5; i++)
                         {
-                            mData.add("这里是item " + (i - 1));
+                            mData.add("这里是item " + i);
                         }
                         mAdapter.notifyDataChanged();
                         Log.i(TAG, "加载更多成功");

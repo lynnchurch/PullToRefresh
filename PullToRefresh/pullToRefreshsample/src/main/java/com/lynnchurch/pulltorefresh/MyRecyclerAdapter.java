@@ -6,15 +6,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jingchen.pulltorefresh.WrapRecyclerView;
+
 import java.util.ArrayList;
 
 public class MyRecyclerAdapter extends BaseAutoLoadMoreAdapter<String>
 {
 
 
-    public MyRecyclerAdapter(Context context, ArrayList<String> data)
+    public MyRecyclerAdapter(Context context, WrapRecyclerView recyclerView, ArrayList<String> data)
     {
-        super(context, data);
+        super(context, recyclerView, data);
     }
 
     @Override

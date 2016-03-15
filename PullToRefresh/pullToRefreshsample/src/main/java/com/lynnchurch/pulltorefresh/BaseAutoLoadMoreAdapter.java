@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jingchen.pulltorefresh.WrapRecyclerView;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.ArrayList;
@@ -17,37 +18,32 @@ import java.util.ArrayList;
 public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
     private static final String TAG = BaseAutoLoadMoreAdapter.class.getSimpleName();
-    private static final int NORMAL_ITEM = 0;
-    private static final int BOTTOM_ITEM = 1;
     protected Context mContext;
     protected ArrayList<T> mData;
     private OnItemClickListener mOnItemClickListener;
-    private LoadmoreViewHolder mLoadmore;
     private OnLoadmoreListener mOnLoadmoreListener;
     private int mLastPosition; // 正常项最后一项的位置
-    private int mBottomItemPosition; // 底部加载最多项的位置
     private View mParentView;
     private int mParentHeight; // item父视图的高度
     private int mItemsHeight; // 所有item的总高度
+    private TextView tv_hint;
+    private CircleProgressBar progressBar;
 
 
-    public BaseAutoLoadMoreAdapter(Context context, ArrayList<T> data)
+    public BaseAutoLoadMoreAdapter(Context context, WrapRecyclerView recyclerView, ArrayList<T> data)
     {
         mContext = context;
+        initFooter(recyclerView);
         mData = data;
-        mData.add((T) new Object());
-        mLastPosition = mData.size() - 2;
-        mBottomItemPosition = mData.size() - 1;
+        mLastPosition = mData.size() - 1;
     }
 
-    @Override
-    public int getItemViewType(int position)
+    private void initFooter(WrapRecyclerView recyclerView)
     {
-        if (mData.size() - 1 == position)
-        {
-            return BOTTOM_ITEM;
-        }
-        return NORMAL_ITEM;
+        View footer = LayoutInflater.from(mContext).inflate(R.layout.loadmore, null);
+        tv_hint = (TextView) footer.findViewById(R.id.tv_hint);
+        progressBar = (CircleProgressBar) footer.findViewById(R.id.progressBar);
+        recyclerView.addFootView(footer);
     }
 
     @Override
@@ -55,14 +51,7 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
     {
         mParentView = parent;
         mParentHeight = parent.getHeight();
-        if (BOTTOM_ITEM == viewType)
-        {
-            mLoadmore = new LoadmoreViewHolder(LayoutInflater.from(mContext).inflate(R.layout.loadmore, parent, false));
-            return mLoadmore;
-        } else
-        {
-            return onCreateNormalViewHolder(parent, viewType);
-        }
+        return onCreateNormalViewHolder(parent, viewType);
     }
 
     public abstract NormalViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType);
@@ -72,7 +61,6 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
     {
         holder.itemView.measure(0, 0);
         mItemsHeight += holder.itemView.getMeasuredHeight();
-        correctBottomItemPosition();
         if (holder instanceof NormalViewHolder)
         {
             final NormalViewHolder viewHolder = (NormalViewHolder) holder;
@@ -105,11 +93,11 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
             }
         }
 
-        if (position > mLastPosition && null != mOnLoadmoreListener && isOverParent())
+        if (position + 1 > mLastPosition && null != mOnLoadmoreListener && isOverParent())
         {
             showLoading(true);
             mOnLoadmoreListener.onLoadmore();
-            mLastPosition = mData.size() - 1;
+            mLastPosition = mData.size();
         }
     }
 
@@ -144,52 +132,22 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
     }
 
     /**
-     * 加载更多
-     */
-    class LoadmoreViewHolder extends RecyclerView.ViewHolder
-    {
-        View itemView;
-        TextView tv_hint;
-        CircleProgressBar progressBar;
-
-        public LoadmoreViewHolder(View v)
-        {
-            super(v);
-            itemView = v;
-            tv_hint = (TextView) v.findViewById(R.id.tv_hint);
-            progressBar = (CircleProgressBar) v.findViewById(R.id.progressBar);
-        }
-    }
-
-    /**
-     * 矫正底部加载更多项的位置
-     */
-    public void correctBottomItemPosition()
-    {
-        if (mBottomItemPosition != mData.size() - 1)
-        {
-            mData.add(mData.remove(mBottomItemPosition));
-            mBottomItemPosition = mData.size() - 1;
-        }
-    }
-
-    /**
      * 当加载失败
      */
     public void onFailed()
     {
-        mLoadmore.progressBar.setVisibility(View.GONE);
-        mLoadmore.tv_hint.setVisibility(View.VISIBLE);
-        mLoadmore.tv_hint.setText("点击重试");
-        mLoadmore.tv_hint.setOnClickListener(new View.OnClickListener()
+        progressBar.setVisibility(View.GONE);
+        tv_hint.setVisibility(View.VISIBLE);
+        tv_hint.setText("点击重试");
+        tv_hint.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 if (null != mOnLoadmoreListener)
                 {
-                    mLoadmore.progressBar.setVisibility(View.VISIBLE);
-                    mLoadmore.tv_hint.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    tv_hint.setVisibility(View.GONE);
                     mOnLoadmoreListener.onLoadmore();
                 }
             }
@@ -202,10 +160,10 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
      */
     public void onNothing()
     {
-        mLoadmore.progressBar.setVisibility(View.GONE);
-        mLoadmore.tv_hint.setVisibility(View.VISIBLE);
-        mLoadmore.tv_hint.setText("没有更多");
-        mLoadmore.tv_hint.setOnClickListener(null);
+        progressBar.setVisibility(View.GONE);
+        tv_hint.setVisibility(View.VISIBLE);
+        tv_hint.setText("没有更多");
+        tv_hint.setOnClickListener(null);
     }
 
     /**
@@ -213,14 +171,14 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
      *
      * @param show
      */
-    public void showLoading(boolean show)
+    private void showLoading(boolean show)
     {
         if (show)
         {
-            mLoadmore.progressBar.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
         } else
         {
-            mLoadmore.progressBar.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
         }
     }
 
