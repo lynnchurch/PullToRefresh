@@ -22,14 +22,14 @@ public class RecyclerWrapAdapter extends RecyclerView.Adapter implements Wrapper
     public RecyclerWrapAdapter(ArrayList<View> headerViews, ArrayList<View> footViews, RecyclerView.Adapter adapter)
     {
         mAdapter = adapter;
-        if (null == mHeaderViews)
+        if (null == headerViews)
         {
             mHeaderViews = EMPTY_INFO_LIST;
         } else
         {
             mHeaderViews = headerViews;
         }
-        if (null == mFootViews)
+        if (null == footViews)
         {
             mFootViews = EMPTY_INFO_LIST;
         } else

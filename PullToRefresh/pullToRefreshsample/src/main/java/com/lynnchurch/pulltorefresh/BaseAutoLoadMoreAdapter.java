@@ -26,7 +26,7 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
     private OnLoadmoreListener mOnLoadmoreListener;
     private int mLastPosition; // 正常项最后一项的位置
     private int mBottomItemPosition; // 底部加载最多项的位置
-    private int mFirstPosition;
+    private View mParentView;
     private int mParentHeight; // item父视图的高度
     private int mItemsHeight; // 所有item的总高度
 
@@ -37,7 +37,6 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
         mData = data;
         mData.add((T) new Object());
         mLastPosition = mData.size() - 2;
-        mFirstPosition = mLastPosition;
         mBottomItemPosition = mData.size() - 1;
     }
 
@@ -54,6 +53,7 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
+        mParentView = parent;
         mParentHeight = parent.getHeight();
         if (BOTTOM_ITEM == viewType)
         {
@@ -97,10 +97,9 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
                 });
             }
             onBindNormalViewHolder(viewHolder, position);
-        }
-        else
+        } else
         {
-            if(!isOverParent())
+            if (!isOverParent())
             {
                 showLoading(false);
             }
@@ -225,6 +224,14 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
         }
     }
 
+    /**
+     * 当数据改变时调用,替换notifyDataSetChanged()
+     */
+    public void notifyDataChanged()
+    {
+        notifyDataSetChanged();
+        mParentView.requestLayout();
+    }
 
     /**
      * 设置Item监听器
@@ -263,5 +270,6 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
     {
         void onLoadmore();
     }
+
 
 }

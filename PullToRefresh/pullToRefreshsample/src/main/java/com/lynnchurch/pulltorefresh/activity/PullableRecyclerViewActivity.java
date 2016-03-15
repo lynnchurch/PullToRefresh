@@ -6,14 +6,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
 import com.jingchen.pulltorefresh.PullToRefreshLayout;
 import com.jingchen.pulltorefresh.WrapRecyclerView;
 import com.lynnchurch.pulltorefresh.MyPullListener;
-import com.lynnchurch.pulltorefresh.R;
 import com.lynnchurch.pulltorefresh.MyRecyclerAdapter;
+import com.lynnchurch.pulltorefresh.R;
 
 import java.util.ArrayList;
 
@@ -35,6 +36,9 @@ public class PullableRecyclerViewActivity extends Activity
         ptrl.setPullUpEnable(false);
         ptrl.setOnPullListener(new MyPullListener());
         recycler_view = (WrapRecyclerView) ptrl.getPullableView();
+
+        View headerView= LayoutInflater.from(this).inflate(R.layout.header,null);
+        recycler_view.addHeaderView(headerView);
         initRecyclerView();
     }
 
@@ -78,8 +82,8 @@ public class PullableRecyclerViewActivity extends Activity
                         {
                             mData.add("这里是item " + (i - 1));
                         }
+                        mAdapter.notifyDataChanged();
                         Log.i(TAG, "加载更多成功");
-                        mAdapter.notifyDataSetChanged();
                     }
                 }.sendEmptyMessageDelayed(0, 3000);
             }
