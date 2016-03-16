@@ -23,7 +23,7 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
     private OnItemClickListener mOnItemClickListener;
     private OnLoadmoreListener mOnLoadmoreListener;
     private int mLastPosition; // 正常项最后一项的位置
-    private View mParentView;
+    private WrapRecyclerView mParentView;
     private int mParentHeight; // item父视图的高度
     private int mItemsHeight; // 所有item的总高度
     private TextView tv_hint;
@@ -33,6 +33,7 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
     public BaseAutoLoadMoreAdapter(Context context, WrapRecyclerView recyclerView, ArrayList<T> data)
     {
         mContext = context;
+        mParentView = recyclerView;
         initFooter(recyclerView);
         mData = data;
         mLastPosition = mData.size() - 1;
@@ -44,12 +45,12 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
         tv_hint = (TextView) footer.findViewById(R.id.tv_hint);
         progressBar = (CircleProgressBar) footer.findViewById(R.id.progressBar);
         recyclerView.addFootView(footer);
+        showLoading(false);
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    final public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        mParentView = parent;
         mParentHeight = parent.getHeight();
         return onCreateBaseViewHolder(parent, viewType);
     }
@@ -57,7 +58,7 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
     public abstract BaseViewHolder onCreateBaseViewHolder(ViewGroup parent, int viewType);
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position)
+    final public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position)
     {
         holder.itemView.measure(0, 0);
         mItemsHeight += holder.itemView.getMeasuredHeight();
@@ -86,10 +87,6 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
             }
             onBindBaseViewHolder(viewHolder, position);
         }
-        if (!isOverParent())
-        {
-            showLoading(false);
-        }
 
         if (position + 1 > mLastPosition && null != mOnLoadmoreListener && isOverParent())
         {
@@ -108,7 +105,7 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
      */
     public boolean isOverParent()
     {
-        return mParentHeight < mItemsHeight ? true : false;
+        return mParentHeight < mItemsHeight + mParentView.getHeaderHeight() ? true : false;
     }
 
     @Override
