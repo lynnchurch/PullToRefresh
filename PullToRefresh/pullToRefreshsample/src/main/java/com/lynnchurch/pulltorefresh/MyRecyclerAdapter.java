@@ -20,26 +20,26 @@ public class MyRecyclerAdapter extends BaseAutoLoadMoreAdapter<String>
     }
 
     @Override
-    public NormalViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType)
+    public BaseViewHolder onCreateBaseViewHolder(ViewGroup parent, int viewType)
     {
-        return new MyNormalViewHolder(LayoutInflater.from(
+        return new MyBaseViewHolder(LayoutInflater.from(
                 mContext).inflate(R.layout.recyclerview_list_item, parent,
                 false));
 
     }
 
     @Override
-    public void onBindNormalViewHolder(NormalViewHolder holder, int position)
+    public void onBindBaseViewHolder(BaseViewHolder holder, int position)
     {
-        MyNormalViewHolder myHolder = (MyNormalViewHolder) holder;
+        MyBaseViewHolder myHolder = (MyBaseViewHolder) holder;
         myHolder.tv_name.setText(mData.get(position));
     }
 
-    class MyNormalViewHolder extends NormalViewHolder
+    class MyBaseViewHolder extends BaseViewHolder
     {
         TextView tv_name;
 
-        public MyNormalViewHolder(View v)
+        public MyBaseViewHolder(View v)
         {
             super(v);
             tv_name = (TextView) v.findViewById(R.id.tv_name);

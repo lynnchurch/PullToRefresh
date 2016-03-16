@@ -51,19 +51,19 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
     {
         mParentView = parent;
         mParentHeight = parent.getHeight();
-        return onCreateNormalViewHolder(parent, viewType);
+        return onCreateBaseViewHolder(parent, viewType);
     }
 
-    public abstract NormalViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType);
+    public abstract BaseViewHolder onCreateBaseViewHolder(ViewGroup parent, int viewType);
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position)
     {
         holder.itemView.measure(0, 0);
         mItemsHeight += holder.itemView.getMeasuredHeight();
-        if (holder instanceof NormalViewHolder)
+        if (holder instanceof BaseViewHolder)
         {
-            final NormalViewHolder viewHolder = (NormalViewHolder) holder;
+            final BaseViewHolder viewHolder = (BaseViewHolder) holder;
             if (null != mOnItemClickListener)
             {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener()
@@ -84,7 +84,7 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
                     }
                 });
             }
-            onBindNormalViewHolder(viewHolder, position);
+            onBindBaseViewHolder(viewHolder, position);
         }
         if (!isOverParent())
         {
@@ -99,7 +99,7 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
         }
     }
 
-    public abstract void onBindNormalViewHolder(BaseAutoLoadMoreAdapter.NormalViewHolder holder, final int position);
+    public abstract void onBindBaseViewHolder(BaseViewHolder holder, final int position);
 
     /**
      * item是否撑满父视图
@@ -118,11 +118,11 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
     }
 
 
-    public static class NormalViewHolder extends RecyclerView.ViewHolder
+    public static class BaseViewHolder extends RecyclerView.ViewHolder
     {
         View itemView;
 
-        public NormalViewHolder(View v)
+        public BaseViewHolder(View v)
         {
             super(v);
             itemView = v;
