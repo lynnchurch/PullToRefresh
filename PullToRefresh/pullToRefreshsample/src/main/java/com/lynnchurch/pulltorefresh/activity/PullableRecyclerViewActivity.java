@@ -37,7 +37,7 @@ public class PullableRecyclerViewActivity extends Activity
         ptrl.setOnPullListener(new MyPullListener());
         recycler_view = (WrapRecyclerView) ptrl.getPullableView();
 
-        View headerView= LayoutInflater.from(this).inflate(R.layout.header,null);
+        View headerView = LayoutInflater.from(this).inflate(R.layout.header, null);
         recycler_view.addHeaderView(headerView);
         initRecyclerView();
     }
@@ -53,7 +53,7 @@ public class PullableRecyclerViewActivity extends Activity
         }
         // 设置列表
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new MyRecyclerAdapter(this,recycler_view, mData);
+        mAdapter = new MyRecyclerAdapter(this, recycler_view, mData);
         mAdapter.setOnLoadmoreListener(new MyRecyclerAdapter.OnLoadmoreListener()
         {
             @Override

@@ -1,6 +1,7 @@
 package com.lynnchurch.pulltorefresh;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,13 @@ public class MyRecyclerAdapter extends BaseAutoLoadMoreAdapter<String>
                 mContext).inflate(R.layout.recyclerview_list_item, parent,
                 false));
 
+    }
+
+    @Override
+    public int getItemHeight(RecyclerView.ViewHolder holder)
+    {
+        holder.itemView.measure(0, 0);
+        return holder.itemView.getMeasuredHeight();
     }
 
     @Override
