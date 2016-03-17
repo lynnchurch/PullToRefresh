@@ -59,11 +59,17 @@ public abstract class BaseAutoLoadMoreAdapter<T> extends RecyclerView.Adapter<Re
 
     public abstract int getItemHeight(RecyclerView.ViewHolder holder);
 
+    public void resetItemHeight()
+    {
+        mItemsHeight = 0;
+    }
+
     @Override
     final public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position)
     {
         if(!isOverParent())
         {
+            showLoading(false);
             mItemsHeight+=getItemHeight(holder);
         }
         if (holder instanceof BaseViewHolder)
