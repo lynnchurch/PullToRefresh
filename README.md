@@ -8,7 +8,7 @@
 ##使用示例代码
 
 布局文件
-```
+```xml
 <com.jingchen.pulltorefresh.PullToRefreshLayout         
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/refresh_view"
@@ -26,7 +26,7 @@
 ```
 
 使用代码
-```
+```java
 package com.jingchen.pulltorefresh.activity;
 
 import java.io.IOException;
